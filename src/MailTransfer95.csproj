@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Classic (non-SDK) MSBuild project for Visual Studio 2019/2022.
+
+    The primary, dependency-free build is build.ps1, which uses the in-box .NET
+    Framework compiler (csc.exe) and needs no Visual Studio, no .NET SDK and no
+    NuGet packages. This project exists for people who prefer Visual Studio:
+        msbuild src\MailTransfer95.csproj /p:Configuration=Release
+  -->
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+          Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B5D2F7A1-3C64-4E58-9A71-2F8C5D0E6A42}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MailTransfer95</RootNamespace>
+    <AssemblyName>MailTransfer95</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <!-- C# 5 keeps the source buildable with the in-box legacy compiler. -->
+    <LangVersion>5</LangVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\assets\app.ico</ApplicationIcon>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <Prefer32Bit>false</Prefer32Bit>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <!-- DPAPI ProtectedData for the opt-in credential store. -->
+    <Reference Include="System.Security" />
+    <!-- JavaScriptSerializer / ScriptIgnore for jobs, settings and OAuth JSON. -->
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Core\TransferModels.cs" />
+    <Compile Include="Core\TransferJob.cs" />
+    <Compile Include="Core\Settings.cs" />
+    <Compile Include="Core\Log.cs" />
+    <Compile Include="Core\ImapSyncLocator.cs" />
+    <Compile Include="Core\ImapSyncCommandBuilder.cs" />
+    <Compile Include="Core\ImapSyncService.cs" />
+    <Compile Include="Core\TransferProgressParser.cs" />
+    <Compile Include="Core\ConnectionTestService.cs" />
+    <Compile Include="Core\FolderService.cs" />
+    <Compile Include="Core\OAuthService.cs" />
+    <Compile Include="Core\JobRepository.cs" />
+    <Compile Include="Core\CredentialStore.cs" />
+    <Compile Include="Core\ReportService.cs" />
+    <Compile Include="Core\BatchModels.cs" />
+    <Compile Include="Ui\Win95Style.cs" />
+    <Compile Include="Ui\Win95Form.cs" />
+    <Compile Include="Ui\Win95Chrome.cs" />
+    <Compile Include="Ui\ClassicButton.cs" />
+    <Compile Include="Ui\ClassicControls.cs" />
+    <Compile Include="Ui\ClassicListView.cs" />
+    <Compile Include="Ui\Win95MessageBox.cs" />
+    <Compile Include="Ui\TablessTabControl.cs" />
+    <Compile Include="Ui\Win95Prompt.cs" />
+    <Compile Include="Ui\EndpointPanel.cs" />
+    <Compile Include="Ui\ConnectionTestForm.cs" />
+    <Compile Include="Ui\OAuthSignInForm.cs" />
+    <Compile Include="Ui\TransferProgressForm.cs" />
+    <Compile Include="Ui\ReportForm.cs" />
+    <Compile Include="Ui\SettingsForm.cs" />
+    <Compile Include="Ui\FolderSelectForm.cs" />
+    <Compile Include="Ui\FolderMappingForm.cs" />
+    <Compile Include="Ui\JobManagerForm.cs" />
+    <Compile Include="Ui\BatchAccountForm.cs" />
+    <Compile Include="Ui\BatchForm.cs" />
+    <Compile Include="Ui\AboutForm.cs" />
+    <Compile Include="Ui\MainForm.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\assets\app.ico">
+      <Link>app.ico</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
